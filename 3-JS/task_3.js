@@ -6,10 +6,10 @@
 // Number.isInteger - чтобы число было только целое
 // repeat - для повтора строки
 
-let n = +(prompt(""));  
-let nn = String(n).repeat(2);                        
-let nnn = String(n).repeat(3);                                  
-if (Number.isInteger && n >= 1 && n <= 9) {
+const n = +(prompt(""));  
+const nn = String(n).repeat(2);                        
+const nnn = String(n).repeat(3);                                  
+if (Number.isInteger(n) && n >= 1 && n <= 9) {
     console.log(n + Number(nn) + Number(nnn));
 } else {
   console.log("Число должно быть целым и от 1 до 9");
