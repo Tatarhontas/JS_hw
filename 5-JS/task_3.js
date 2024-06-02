@@ -13,12 +13,12 @@ const wordArray = str.split(""); // получила ["J", "a", "v", "a", "S", "
 let vowels = 0;
 let consonants = 0;
 const vowelsChek = "aeiouAEIOU";
-const consonantsChek = "bcdfghjklmnpqrstvwxz";
+const consonantsChek = "bcdfghjklmnpqrstvwxzBCDFGHJKLMNPQRSTVWXZ";
 function count(wordArray) {
   for (let i = 0; i < wordArray.length; i++) {
     if (vowelsChek.includes(wordArray[i])) {
       vowels++;
-    } else if (consonantsChek.includes(wordArray[i].toLowerCase())) {
+    } else if (consonantsChek.includes(wordArray[i])) {
       consonants++;
     }
   }
