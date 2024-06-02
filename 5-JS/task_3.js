@@ -12,12 +12,13 @@ const str = "JavaScript";
 const wordArray = str.split("");     // получила ["J", "a", "v", "a", "S", "c", "r", "i", "p", "t"]
 let vowels = 0;
 let consonants = 0;
-const proverka = "aeiouyAEIOU"
+const vowelsChek = "aeiouAEIOU"
+const consonantsChek = "bcdfghjklmnpqrstvwxz";
 function count(wordArray) { 
   for(let i = 0; i < wordArray.length; i++) {
-      if (proverka.includes(wordArray[i])) 
+      if (vowelsChek.includes(wordArray[i])) 
           { vowels++; }                           
-      else if (!proverka.includes(wordArray[i])) 
+      else if (consonantsChek.includes(wordArray[i].toLowerCase())) 
           { consonants++; }            }
       return {vowels, consonants}; 
       } const result = count(wordArray);
@@ -44,11 +45,13 @@ const str = ("JavaScript");
 const wordArray = str.split("");         // получила ["J", "a", "v", "a", "S", "c", "r", "i", "p", "t"]
 let offset = -1;
 function caesar(wordArray) {
+  let result = "";
     for(let i = 0; i < wordArray.length; i++) 
       { let num = wordArray[i].charCodeAt();
         if (num >= 65 && num <= 90) {
             num = ((num - 65 + offset + 26) % 26) + 65;
       } else if (num >= 97 && num <= 122) {
             num = ((num - 97 + offset + 26) % 26) + 97;
-      } console.log(String.fromCharCode(num)); }
-      } caesar(wordArray);
+      } result += String.fromCharCode(num); }
+  return result; }
+       console.log(caesar(wordArray));
