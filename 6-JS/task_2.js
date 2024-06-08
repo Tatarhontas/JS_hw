@@ -37,7 +37,8 @@ function wordArray (words) {
     for (let i = 0; i < words.length; i++) {            // бегаем по словам
         if (words[i].length > dlinaMaxWord) {           // длина текущего слова больше чем длина предыдущего (сравнивай ЧИСЛА!)
             dlinaMaxWord = words[i].length;             // положили в переменную макс слово, чтобы потом с НИМ сравнивать
-            massivMaxWords = [words[i]];                // положили в массив макс слово
+            massivMaxWords.length = 0;                  
+            massivMaxWords.push(words[i]);              // положили в массив макс слово
         } else if (words[i].length === dlinaMaxWord) {  // сравниваем найденное слово с предыдущим 
         massivMaxWords.push(words[i]);                  // если они одинаковые- пушим в массив и затем фор начинает снова искать
     } 
@@ -50,22 +51,21 @@ function wordArray (words) {
 
 // сравнить числа, если ===, удалить
 const numbers = [1, 2, 3, 1, 1, 3, 2, 4, 5, 5];
-function delDuplicates (numbers) {
-      numbers.sort(function(x, y) {                     // если не поменять местами, то удалит только рядом стоящие (1, 1)
-        return x - y;                                   // чтобы по порядку от начала 1 2 3 4 5 (обратно y-x)
-      });
-        for (let i = numbers.length - 1; i > 0; i--) {  // в обратном порядке цикл, иначе пропускает индексы 
-        if (numbers[i] === numbers[i - 1]) {            // (найдёт-удалит, а у следующего индекс станет как у удаленного, 
-        numbers.splice(i, 1);                           // а цикл пойдёт дальше со СЛЕДУЮЩЕГО индекса)
+function removeDuplicates (numbers) {
+        const result = [];                     
+        for (const num of numbers) {   
+        if (!result.includes(num)) {             
+        result.push(num);                           
         }
        } 
-} delDuplicates(numbers);
-console.log(numbers);
+    return result;
+} 
+console.log(removeDuplicates(numbers));
 
 // увидела про set
 const numbers = [1, 2, 3, 1, 1, 3, 2, 4, 5, 5];
-const delDuplicates = [... new Set(numbers)];
-console.log(delDuplicates);
+const removeDuplicates = [... new Set(numbers)];
+console.log(removeDuplicates);
 
 
 // 4. Написать функцию, которая принимает на вход слово и проверяет, является ли это слово палиндромом
@@ -74,15 +74,14 @@ console.log(delDuplicates);
 const str = 'шабаШ';
 const word1 = str.toLowerCase();             // в ниж рег
 let word2 = '';
-function word1Naoborot (str) {
+function reverseWord (str) {
 for (let i = str.length - 1; i >= 0; i--) {  // начинаю в обратном порядке
      word2 += str[i];                        // кладу каждую буковку
-}   return word2;
+}   
+return word2;
 } 
 function palindrom (str) {
-    if (word1 === word1Naoborot (word1)) {  // сравниваю word1 и word2 
-    console.log('это слово палиндром');
-} else {
-    console.log('это слово не палиндром');
-} 
-} palindrom (str);
+    return word1 === reverseWord(word1) 
+    ? `слово ${str} является палиндромом`
+    : `слово ${word2} не является палиндромом`; 
+} console.log(palindrom(str));
