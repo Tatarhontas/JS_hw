@@ -15,14 +15,9 @@
 function getEmployeeInfo(name) {
     const allNames = ['Алексей', 'Марина', 'Никита', 'Оксана', 'Владислав'];       //не забывай ''
     const salaries = [32000, 50500, 71000, 83500, 100200];
-        if (allNames.indexOf(name) >= 0) {
-        const salary = salaries[allNames.indexOf(name)];
-        const result = [];
-        result.push(name, salary);
-        return result; 
-} else {
-return null;
-}
+    const foundIdx = allNames.indexOf(name);
+    if (foundIdx < 0 ) return null;
+return [name, salaries[foundIdx]]; 
 }
 console.log(getEmployeeInfo('Алексей'));
 
