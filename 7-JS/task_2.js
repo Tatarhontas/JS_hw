@@ -3,6 +3,7 @@
 //   чтобы вместо каждой буквы была цифра, показывающая сколько раз эта буква встречается в предложении. 
 //   Пробелы и знаки препинания оставляем без изменения. Регистр не должен играть роли.
 
+// для себя:
 // const str = 'I am the best AQA ever!';
 // const letters = str.toLowerCase().split('');
 // const numbers = letters.map(newStr).join('');         // в методе функция
@@ -43,9 +44,8 @@ function count(word) {
   const vowels = 'аеёиоуыэюя'; 
   return Array.from(word.toLowerCase()).filter(letter => vowels.includes(letter)).length;
 }
-const sorted = arr.sort((a, b) => {
-  const vowelCount = count(a) - count(b);
-  return vowelCount === 0 ? a.localeCompare(b, 'ru') : vowelCount;
+  const sorted = arr.sort((a, b) => {
+  return count(a) - count(b);
 });
 console.log(sorted); 
 
@@ -54,36 +54,51 @@ console.log(sorted);
 //   Усложнение: в массиве могут быть вложены еще массивы на разной глубине. (ПОПРОБУЙТЕ МЕТОД .flat(), изучите как он работает с разными глубинами вложенности)
 //   Вернуть нужно всё также есть ли у каждой скобочки соответствующая пара. 
 
+// const arr_01 = [[['(']], ')', '(', ')', ')', ['(', ['('], [')']]];
+// const arr_02 = arr_01.flat(Infinity);                             // на все уровни
+// const arr_03 = arr_02.reduce((accum, curr) => (curr === '(' ? accum + 1 : curr === ')' ? accum - 1 : accum), 0);
+// console.log(arr_03 === 0 ? 'скобки сбалансированы' : 'скобки не сбалансированы');
+
+// выведу сам массив:
 const arr_01 = [[['(']], ')', '(', ')', ')', ['(', ['('], [')']]];
-const arr_02 = arr_01.flat(Infinity);                             // на все уровни
-let arr_03 = arr_02.reduce((accum, curr) => (curr === '(' ? accum + 1 : curr === ')' ? accum - 1 : accum), 0);
-console.log(arr_03 === 0 ? 'скобки сбалансированы' : 'скобки не сбалансированы');
+const arr_02 = arr_01.flat(Infinity);  
+function balance(arr_02) {
+  const result = [];
+  let accum = 0;
+  arr_02.forEach(bracket => {
+      if (bracket === '(') {
+          accum++;
+      } else if (bracket === ')' && accum > 0) {     // >0 значит в аккуме уже есть несбалансированные
+          result.push('(', ')');
+          accum--;
+      }
+  });
+  return result; 
+}
+console.log(balance(arr_02));
 
 //
-const arr_04 = ['(', '(', '(', '(', ')'];
-const newArr = [];
-let balance = 0; 
-arr_04.forEach(bracket => {
-  if (bracket === '(') {
-    if (balance > 0) {
-      newArr.push(')');
-      balance -= 1;
-    }
-    newArr.push('('); 
-    balance += 1; 
-  } else {
-    newArr.push(')');
-    balance -= 1;
-  }
-});
-
-while(balance > 1) {
-  newArr.push('(');
-  newArr.push(')');
-  balance -= 1;
+const arr_04 = ['(', '(', '(', '(', ')', '('];
+const arr_05 = arr_04.flat(Infinity);
+function balanced(arr) {
+  const result = [];
+  let balance = 0;
+  arr.forEach(bracket => {
+      if (bracket === '(') {
+          balance++;
+      } else if (bracket === ')' && balance > 0) {     // >0 значит в аккуме уже есть несбалансированные
+          result.push('(', ')');
+          balance--;
+      }
+  });
+ 
+while (balance > 0) {
+  result.push('(', ')');
+  balance--;
 }
-console.log(newArr); 
-
+return result;
+}
+console.log(balanced(arr_05));
 
 
 
