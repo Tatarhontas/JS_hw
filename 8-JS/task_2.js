@@ -118,42 +118,49 @@ function sumCount(departments) {                                                
 // getEnterpriseName(4) // Предприятие 1
 // getEnterpriseName("Отдел маркетинга") // Предприятие 2
 
-function getEnterpriseName(enterprises, value) {
+function getEnterpriseName(value) {
   for (const enterprise of enterprises) {
       if (enterprise.departments.find(department => department.id === value || department.name === value)) { // ищу отдел по условию
-        return `${enterprise.name}`; 
+        return enterprise.name; 
       }
     }
-     return 'Отдел не найден'; 
+    throw new Error ('Отдел не найден'); 
+  }
+  try {
+    console.log(getEnterpriseName(2));
+    console.log(getEnterpriseName('Отдел тестирования'));
+} catch (error) {
+    console.log(error.message);
 }
-console.log(getEnterpriseName(enterprises, 2));
-console.log(getEnterpriseName(enterprises, "Отдел тестирования"));
 
 // 3. Написать функцию, которая будет добавлять предприятие. В качестве аргумента принимает название предприятия
 // Пример:
 // addEnterprise("Название нового предприятия")
 
-function maxID(enterprises) {
+function maxID() {
   const enterpriseID = enterprises.map(enterprise => enterprise.id);
   const departmentID = enterprises.flatMap(enterprise => 
     enterprise.departments.map(department => department.id)
   );
-    const allID = [...enterpriseID, ...departmentID];
-    return Math.max(...allID);
-}
-console.log(maxID(enterprises));
+    const all_ID = [...enterpriseID, ...departmentID];
+    const max_ID = Math.max(...all_ID);
+    return generateNewId(max_ID);
+  }
 
+  function generateNewId(max_ID) {
+    return max_ID + 1;
+  }
 
-  function addEnterprise(enterprises, name) {   
+  function addEnterprise(name) {   
     const newEnterprise = {
-      id : maxID(enterprises) + 1,
+      id : maxID(),
       name,
       departments: []      
     }
     enterprises.push(newEnterprise);
-    return enterprises;
+    return newEnterprise;
   }
-  console.log(addEnterprise(enterprises, "Предприятие 4")); // { id: 11, name: 'Предприятие 4', departments: [] }
+  console.log(addEnterprise('Предприятие 4')); // { id: 11, name: 'Предприятие 4', departments: [] }
 
 // 4. Написать функцию, которая будет добавлять отдел в предприятие. В качестве аргумента принимает id предприятия, в которое будет добавлен отдел и название отдела.
 // Пример:
@@ -167,16 +174,21 @@ function findEnterprise(id) {
   function addDepartment(id, name) { 
     if(findEnterprise(id)) {
       const newDepartment = {
-        id : maxID(enterprises) + 1,
+        id : maxID(),
         name,
         employees_count: 13      
       }
        findEnterprise(id).departments.push(newDepartment); 
        return enterprises;
     } 
-      return 'Предприятие с таким id не найдено';
+    throw new Error('Предприятие с таким id не найдено');
   }
-  console.log(addDepartment(11, "Отдел Отдыха"));
+  
+  try {
+      console.log(addDepartment(11, "Отдел Отдыха"));
+  } catch (error) {
+      console.log(error.message);
+  }
 
 // 5. Написать функцию для редактирования названия предприятия. Принимает в качестве аргумента id предприятия и новое имя предприятия.
 // Пример:
@@ -184,39 +196,50 @@ function findEnterprise(id) {
 
 function editEnterprise(id, newEntName) {
   if(!findEnterprise(id)) {
-    return 'Предприятие с таким id не найдено';
+    throw new Error ('Предприятие с таким id не найдено');
   }
     findEnterprise(id).name = newEntName;
   return enterprises;
 }
-console.log(editEnterprise(11, "Самое лучшее Предприятие"));
+try {
+  console.log(editEnterprise(11, "Самое лучшее Предприятие"));
+} catch (error) {
+  console.log(error.message);
+}
 
 // 6. Написать функцию для редактирования названия отдела. Принимает в качестве аргумента id отдела и новое имя отдела.
 // Пример:
 // editDepartment(7, "Новое название отдела")
 
-function findDepartment(enterprises, value) {
+function findDepartment(value) {
   for (const enterprise of enterprises) { 
     const department = enterprise.departments.find(dep => dep.id === value || dep.name === value);
       if (department) {                                  // можно не только по id, но и по названию
       return department;
       }
   }
-  return 'Отдел не найден';
+  throw new Error (`Отдел не найден`);
 }
-console.log(findDepartment(enterprises, 12));   // Object { id: 12, name: "Отдел Отдыха", employees_count: 13 }
-
+try {
+console.log(findDepartment(12));           // Object { id: 12, name: "Отдел Отдыха", employees_count: 13 }
+} catch (error) {
+  console.log(error.message);
+}   
 
 function editDepartment(id, newDepName) {
-  const department = findDepartment(enterprises, id);
-  if(typeof department === 'object') {
+  const department = findDepartment(id);
+  if(department) {
     department.name = newDepName;
     return department;
   } else {
-    return 'Отдел с таким id не найден';
+    throw new Error (`Отдел с таким id не найден`);
   }
 }
-console.log(editDepartment(12, "Отдел Bacchanalia"));   // Object { id: 12, name: "Отдел Bacchanalia", employees_count: 13 }
+try {
+console.log(editDepartment(12, 'Отдел Bacchanalia'));   // Object { id: 12, name: "Отдел Bacchanalia", employees_count: 13 }
+} catch (error) {
+  console.log(error.message);
+}
 
 // 7. Написать функцию для удаления предприятия. В качестве аргумента принимает id предприятия.
 // Пример:
@@ -241,10 +264,13 @@ function deleteEnterprise(id) {
     enterprises.splice(index, 1);
     return enterprises;
   } 
-  return 'Предприятие с таким id не найдено';
+  throw new Error (`Предприятие с таким id не найдено`);
 }
+try {
 console.log(deleteEnterprise(11));
-
+} catch (error) {
+  console.log(error.message);
+}
 
 // 8. Написать функцию для удаления отдела. В качестве аргумента принимает id отдела. Удалить отдел можно только, если в нем нет сотрудников.
 // Пример:
@@ -280,23 +306,26 @@ function moveEmployees(firstDepartmentID, secondDepartmentID) {
   const secondDep = findDepartment(secondDepartmentID);
   if (firstDep && secondDep) {
     if (getEnterpriseName(firstDepartmentID) === getEnterpriseName(secondDepartmentID)) {   // отделы из одного предприятия
-      secondDep.employees.push(...firstDep.employees);                                      // Перенос
-      firstDep.employees = [];                                                              // Очистка
       secondDep.employees_count += firstDep.employees_count;
-      firstDep.employees_count = 0;
+      firstDep.employees_count = 0;   
       return `Сотрудники из отдела ${firstDepartmentID} перенесены в отдел ${secondDepartmentID}`;
     } else {
-      return 'Отдел не найден или отделы из разных предприятий';
+      throw new Error (`Отдел не найден или отделы из разных предприятий'`); 
     }
   }
 }
+try {
 console.log(moveEmployees(2, 4));
+} catch (error) {
+  console.log(error.message);
+}
 
+// // проверка(для себя):
+//     enterprises.forEach(enterprise => {
+//       console.log(`ID: ${enterprise.id}, Name: ${enterprise.name}`);
+//         enterprise.departments.forEach(department => {       
+//           console.log(`ID: ${department.id}, Name: ${department.name}`);
+//         });
+//     });
 
-// проверка(для себя):
-    enterprises.forEach(enterprise => {
-      console.log(`ID: ${enterprise.id}, Name: ${enterprise.name}`);
-        enterprise.departments.forEach(department => {       
-          console.log(`ID: ${department.id}, Name: ${department.name}`);
-        });
-    });
+    
