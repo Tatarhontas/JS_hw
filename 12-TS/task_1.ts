@@ -24,34 +24,22 @@ function getFirstElement<T>(arr: T[]): T {
 //         'My name is Elena TSovna, I am software developer with 6 years of experience in TypeScript and 6000$ salary' (пример для девелопера)
 
 interface Person {
-    name: string; 
-    surname: string; 
-    experienceYears: number;
     getDetails(): string;
 }
 
 abstract class Employee implements Person {
-    name: string; 
-    surname: string; 
-    experienceYears: number;
     protected salary: number = 0;
     abstract getDetails(): string;
     protected abstract calculateSalary(): void; // не намбер, потому что значение уходит в сэлари
 
-    constructor(name: string, surname: string, experienceYears: number) {
-        this.name = name;
-        this.surname = surname;
-        this.experienceYears = experienceYears;
+    constructor(public name: string, public surname: string, public experienceYears: number) {
         this.calculateSalary();
     }
 }
 
 class Manager extends Employee {
-    preferred: 'scrum' | 'kanban';
-    
-    constructor(name: string, surname: string, experienceYears: number, preferred: 'scrum' | 'kanban') {
+    constructor(name: string, surname: string, experienceYears: number, public preferred: 'scrum' | 'kanban') {
         super(name, surname, experienceYears);
-        this.preferred = preferred;
     }
     protected calculateSalary(): void {             // не намбер, потому что значение уходит в сэлари
         this.salary = this.experienceYears * 500;   // вычисляю не для калькулятора, а для сэлари
@@ -62,11 +50,8 @@ class Manager extends Employee {
 }
 
 class Developer extends Employee {
-    programmingLanguage: 'js' | 'ts' | 'java' | 'python';
-
-    constructor(name: string, surname: string, experienceYears: number, programmingLanguage: 'js' | 'ts' | 'java' | 'python') {
+   constructor(name: string, surname: string, experienceYears: number, public programmingLanguage: 'js' | 'ts' | 'java' | 'python') {
         super(name, surname, experienceYears);
-        this.programmingLanguage = programmingLanguage;
     }
     protected calculateSalary(): void {             // не намбер, потому что значение уходит в сэлари
         this.salary = this.experienceYears * 1000;  // вычисляю не для калькулятора, а для сэлари
