@@ -41,11 +41,7 @@ type ArrayOfPairs<T> = [string, T][];
 type ObjectOfPairs<T> = {[key: string]: T};
 
 function generateObject<T>(pairs: ArrayOfPairs<T>): ObjectOfPairs<T> {
-    const result: ObjectOfPairs<T> = {};
-    for (const [key, value] of pairs) {
-        result[key] = value;
-    }
-    return result;
+    return Object.fromEntries(pairs);
 }
 
 const result_2 = generateObject([
