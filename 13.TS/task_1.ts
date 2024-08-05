@@ -28,4 +28,4 @@ type optional = Partial<IEmploye>;
 type iEnameSalar = Pick <IEmploye, ("name" | "salari")>;
 type iEnotManager = Omit<IEmploye, 'isManager'>;
 type iEreadonly = Readonly <IEmploye>;
-type arrOfObj = {[key: string]:string | number | boolean}[];
+type arrOfObj = Record<string, string | number | boolean>;
