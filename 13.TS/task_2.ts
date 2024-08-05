@@ -18,7 +18,7 @@ interface lichnoeDelo {
     age?: number;
   }
   
-  class Storage<T extends lichnoeDelo> {
+  class Storage<T extends { id: number }> {
     private arrOfObj: T[] = [];
     private count: number = 1;
   
@@ -59,7 +59,7 @@ interface lichnoeDelo {
   }
   }
   
-  const storage = new Storage;
+  const storage = new Storage<lichnoeDelo>();
   
   // Пример использования:
   
